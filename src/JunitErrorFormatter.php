@@ -109,7 +109,7 @@ class JunitErrorFormatter implements ErrorFormatter
     {
         $testcase = $dom->createElement('testcase');
         $testcase->setAttribute('file', $fileName);
-        $testcase->setAttribute('line', $line);
+        $testcase->setAttribute('line', (string) $line);
         $className = basename($fileName, '.php');
         $testcase->setAttribute('class', $className);
         $testcase->setAttribute('classname', $className);

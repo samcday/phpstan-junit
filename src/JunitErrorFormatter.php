@@ -72,7 +72,7 @@ class JunitErrorFormatter implements ErrorFormatter
             foreach ($fileErrors as $file => $errors) {
                 foreach ($errors as $error) {
                     $fileName = $this->relativePathHelper->getRelativePath($file);
-                    $this->createTestCase($dom, $testsuite, sprintf('%s:%s', $fileName, (string) $error->getLine()), $error->getMessage());
+                    $this->createTestCase($dom, $testsuite, $fileName, $error->getLine(), $error->getMessage());
 
                     $totalErrors += 1;
                 }
@@ -97,10 +97,13 @@ class JunitErrorFormatter implements ErrorFormatter
         return $returnCode;
     }
 
-    private function createTestCase(DOMDocument $dom, DOMElement $testsuite, string $reference, ?string $message): void
+    private function createTestCase(DOMDocument $dom, DOMElement $testsuite, string $fileName, int $line, ?string $message): void
     {
         $testcase = $dom->createElement('testcase');
-        $testcase->setAttribute('name', $reference);
+        $testcase->setAttribute('file', $fileName);
+        $className = basename($fileName, '.php');
+        $testcase->setAttribute('class', $className);
+        $testcase->setAttribute('classname', $className);
         $testcase->setAttribute('failures', (string) 1);
         $testcase->setAttribute('errors', (string) 0);
         $testcase->setAttribute('tests', (string) 1);

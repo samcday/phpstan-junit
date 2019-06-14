@@ -1,5 +1,5 @@
 {
-    "name": "mavimo/phpstan-junit",
+    "name": "samcday/phpstan-junit",
     "description": "PHPStan JUnit error reporter",
     "license": ["MIT"],
     "minimum-stability": "stable",

@@ -82,7 +82,15 @@ class JunitErrorFormatter implements ErrorFormatter
 
             if (count($genericErrors) > 0) {
                 foreach ($genericErrors as $genericError) {
-                    $this->createTestCase($dom, $testsuite, 'Generic error', $genericError);
+                    $testcase = $dom->createElement('testcase');
+                    $testcase->setAttribute('name', 'Generic error');
+                    $testcase->setAttribute('class', 'GenericError');
+                    $testcase->setAttribute('classname', 'GenericError');
+                    $failure = $dom->createElement('failure');
+                    $failure->setAttribute('type', 'error');
+                    $failure->setAttribute('message', $genericError);
+                    $testcase->appendChild($failure);
+                    $testsuite->appendChild($testcase);
 
                     $totalErrors += 1;
                 }
@@ -101,6 +109,7 @@ class JunitErrorFormatter implements ErrorFormatter
     {
         $testcase = $dom->createElement('testcase');
         $testcase->setAttribute('file', $fileName);
+        $testcase->setAttribute('line', $line);
         $className = basename($fileName, '.php');
         $testcase->setAttribute('class', $className);
         $testcase->setAttribute('classname', $className);
